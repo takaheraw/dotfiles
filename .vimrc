@@ -73,3 +73,5 @@ let g:neocomplcache_enable_at_startup = 1
 " " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 
+" vimfiler IDE
+nnoremap <silent> <Leader>fi :<C-u>VimFilerBufferDir -split -simple -winwidth=35 -no-quit<CR>
