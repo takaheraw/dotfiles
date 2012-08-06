@@ -1,3 +1,7 @@
 wget http://github.com/takaheraw/dotfiles/raw/master/setup.rb
 ruby setup.rb
 
+cd ~/dotfiles
+git submodule init
+git submodule update
+
