@@ -23,6 +23,7 @@ Bundle 'mattn/gist-vim'
 Bundle 'Shougo/vimfiler'
 Bundle 'Shougo/unite.vim'
 Bundle 'Shougo/vimproc'
+Bundle 'Shougo/vimshell'
 
 filetype plugin indent on 
 
