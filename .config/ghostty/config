@@ -17,6 +17,7 @@ adjust-cell-height = 2
 theme = Catppuccin Mocha
 
 # --- Window and Appearance ---
+unfocused-split-opacity = 0.7
 background-opacity = 0.9
 background-blur-radius = 20
 macos-titlebar-style = transparent
