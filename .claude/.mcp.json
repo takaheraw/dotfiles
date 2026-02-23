@@ -1,0 +1,79 @@
+{
+  "mcpServers": {
+    "Context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"]
+    },
+    "deepwiki": {
+      "command": "npx",
+      "args": ["-y", "mcp-deepwiki@latest"]
+    },
+    "sequential-thinking": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "drawio": {
+      "command": "npx",
+      "args": ["@drawio/mcp"]
+    },
+    "core-mcp-server": {
+      "command": "uvx",
+      "args": ["awslabs.core-mcp-server@latest"]
+    },
+    "aws-documentation-mcp-server": {
+      "command": "uvx",
+      "args": ["awslabs.aws-documentation-mcp-server@latest"],
+      "env": {
+        "AWS_DOCUMENTATION_PARTITION": "aws"
+      }
+    },
+    "awslabs.aws-api-mcp-server": {
+      "command": "uvx",
+      "args": ["awslabs.aws-api-mcp-server@latest"],
+      "env": {
+        "AWS_REGION": "ap-northeast-1",
+        "FASTMCP_LOG_LEVEL": "ERROR",
+        "READ_OPERATIONS_ONLY": "true"
+      }
+    },
+    "iam-mcp-server": {
+      "command": "uvx",
+      "args": ["awslabs.iam-mcp-server@latest"]
+    },
+    "aws-diagram-mcp-server": {
+      "command": "uvx",
+      "args": ["awslabs.aws-diagram-mcp-server"]
+    },
+    "terraform-mcp-server": {
+      "command": "uvx",
+      "args": ["awslabs.terraform-mcp-server@latest"]
+    },
+    "code-doc-gen-mcp-server": {
+      "command": "uvx",
+      "args": ["awslabs.code-doc-gen-mcp-server@latest"]
+    },
+    "ecs-mcp-server": {
+      "command": "uvx",
+      "args": ["--from", "awslabs-ecs-mcp-server", "ecs-mcp-server"]
+    },
+    "cost-explorer-mcp-server": {
+      "command": "uvx",
+      "args": ["awslabs.cost-explorer-mcp-server@latest"]
+    },
+    "serena": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "--from",
+        "git+https://github.com/oraios/serena",
+        "serena",
+        "start-mcp-server",
+        "--context",
+        "ide-assistant",
+        "--project",
+        "."
+      ],
+      "env": {}
+    }
+  }
+}
