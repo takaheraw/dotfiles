@@ -1,0 +1,246 @@
+{
+  "cleanupPeriodDays": 30,
+  "env": {
+    "BASH_DEFAULT_TIMEOUT_MS": "600000",
+    "BASH_MAX_TIMEOUT_MS": "600000",
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "true",
+    "CLAUDE_CODE_ENABLE_TASKS": "true",
+    "SHELL": "/opt/homebrew/bin/zsh"
+  },
+  "includeCoAuthoredBy": false,
+  "permissions": {
+    "allow": [
+      "Read",
+      "Edit",
+      "MultiEdit",
+      "Write",
+      "Glob",
+      "Grep",
+      "LS",
+      "TodoRead",
+      "TodoWrite",
+      "WebFetch(domain:*)",
+      "WebSearch",
+      "Bash(git status)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)",
+      "Bash(git stash:*)",
+      "Bash(npm:*)",
+      "Bash(yarn:*)",
+      "Bash(bundle:*)",
+      "Bash(rails:*)",
+      "Bash(rake:*)",
+      "Bash(rspec:*)",
+      "Bash(rubocop:*)",
+      "Bash(mise:*)",
+      "Bash(docker ps:*)",
+      "Bash(docker logs:*)",
+      "Bash(docker exec:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Bash(find:*)",
+      "Bash(echo:*)",
+      "Bash(pwd)",
+      "Bash(which:*)",
+      "Bash(env)",
+      "Bash(printenv:*)",
+      "Bash(gh pr:*)",
+      "Bash(gh issue:*)",
+      "Bash(gh status)",
+      "Bash(terraform plan:*)",
+      "Bash(terraform validate)",
+      "Bash(terraform fmt:*)",
+      "Bash(aws:*)"
+    ],
+    "deny": [
+      "Bash(sudo:*)",
+      "Bash(su:*)",
+      "Bash(rm -rf:*)",
+      "Bash(rm -r /*)",
+      "Bash(rm -r ~/*)",
+      "Bash(dd:*)",
+      "Bash(mkfs:*)",
+      "Bash(format:*)",
+      "Bash(> /dev/sda:*)",
+      "Bash(chmod -R 777:*)",
+      "Bash(chmod 777:*)",
+      "Bash(chown -R:*)",
+      "Bash(git checkout:*)",
+      "Bash(git config:*)",
+      "Bash(git rebase:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git restore:*)",
+      "Bash(git push --force:*)",
+      "Bash(git push -f:*)",
+      "Bash(gh repo delete:*)",
+      "Bash(gh repo archive:*)",
+      "Bash(gh repo create:*)",
+      "Bash(gh repo rename:*)",
+      "Bash(gh release delete:*)",
+      "Bash(gh secret:*)",
+      "Bash(gh ssh-key:*)",
+      "Bash(gh gpg-key:*)",
+      "Bash(gh auth logout:*)",
+      "Bash(gh workflow run:*)",
+      "Bash(npm install -g:*)",
+      "Bash(npm i -g:*)",
+      "Bash(yarn global add:*)",
+      "Bash(pip install:*)",
+      "Bash(gem install:*)",
+      "Bash(bundle install:*)",
+      "Bash(brew install:*)",
+      "Bash(apt-get:*)",
+      "Bash(yum:*)",
+      "Bash(docker rm -f:*)",
+      "Bash(docker system prune:*)",
+      "Bash(docker volume rm:*)",
+      "Bash(terraform apply:*)",
+      "Bash(terraform destroy:*)",
+      "Bash(aws ec2 terminate-instances:*)",
+      "Bash(aws ec2 delete-vpc:*)",
+      "Bash(aws ec2 delete-subnet:*)",
+      "Bash(aws ec2 delete-security-group:*)",
+      "Bash(aws ec2 delete-route-table:*)",
+      "Bash(aws ec2 delete-internet-gateway:*)",
+      "Bash(aws ec2 stop-instances:*)",
+      "Bash(aws ec2 reboot-instances:*)",
+      "Bash(aws ec2 modify-instance-attribute:*)",
+      "Bash(aws ec2 revoke-security-group-ingress:*)",
+      "Bash(aws ec2 revoke-security-group-egress:*)",
+      "Bash(aws ec2 authorize-security-group-ingress:*)",
+      "Bash(aws ec2 authorize-security-group-egress:*)",
+      "Bash(aws s3 rm:*)",
+      "Bash(aws s3 rb:*)",
+      "Bash(aws s3api delete-bucket:*)",
+      "Bash(aws s3api delete-object:*)",
+      "Bash(aws s3api put-bucket-policy:*)",
+      "Bash(aws s3api delete-bucket-policy:*)",
+      "Bash(aws rds delete-db-instance:*)",
+      "Bash(aws rds delete-db-cluster:*)",
+      "Bash(aws rds delete-db-snapshot:*)",
+      "Bash(aws rds modify-db-instance:*)",
+      "Bash(aws rds stop-db-instance:*)",
+      "Bash(aws rds reboot-db-instance:*)",
+      "Bash(aws iam delete-user:*)",
+      "Bash(aws iam delete-role:*)",
+      "Bash(aws iam delete-policy:*)",
+      "Bash(aws iam delete-access-key:*)",
+      "Bash(aws iam create-user:*)",
+      "Bash(aws iam create-role:*)",
+      "Bash(aws iam create-policy:*)",
+      "Bash(aws iam create-access-key:*)",
+      "Bash(aws iam put-user-policy:*)",
+      "Bash(aws iam put-role-policy:*)",
+      "Bash(aws iam attach-user-policy:*)",
+      "Bash(aws iam attach-role-policy:*)",
+      "Bash(aws iam detach-user-policy:*)",
+      "Bash(aws iam detach-role-policy:*)",
+      "Bash(aws iam update-user:*)",
+      "Bash(aws iam update-role:*)",
+      "Bash(aws iam update-access-key:*)",
+      "Bash(aws cloudformation delete-stack:*)",
+      "Bash(aws cloudformation update-stack:*)",
+      "Bash(aws cloudformation create-stack:*)",
+      "Bash(aws lambda delete-function:*)",
+      "Bash(aws lambda update-function-code:*)",
+      "Bash(aws lambda update-function-configuration:*)",
+      "Bash(aws lambda publish-version:*)",
+      "Bash(aws ecs delete-service:*)",
+      "Bash(aws ecs delete-cluster:*)",
+      "Bash(aws ecs update-service:*)",
+      "Bash(aws ecs stop-task:*)",
+      "Bash(aws secretsmanager delete-secret:*)",
+      "Bash(aws secretsmanager update-secret:*)",
+      "Bash(aws ssm delete-parameter:*)",
+      "Bash(aws ssm put-parameter:*)",
+      "Bash(aws logs delete-log-group:*)",
+      "Bash(aws logs delete-log-stream:*)",
+      "Bash(aws route53 delete-hosted-zone:*)",
+      "Bash(aws route53 change-resource-record-sets:*)",
+      "Bash(aws organizations:*)",
+      "Bash(aws sts assume-role:*)",
+      "Bash(bash:*)",
+      "Bash(sh:*)",
+      "Bash(zsh:*)",
+      "Read(**/.env*)",
+      "Read(**/secrets/**)",
+      "Read(**/*secret*)",
+      "Read(**/*password*)",
+      "Read(**/.aws/**)",
+      "Read(**/.ssh/id_*)",
+      "Write(**/.env*)",
+      "Write(**/secrets/**)",
+      "Edit(**/.env*)",
+      "MultiEdit(**/.env*)"
+    ],
+    "ask": []
+  },
+  "model": "opus",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/deny-check.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/preserve-file-permissions.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/scripts/preserve-file-permissions.sh"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \"Awaiting confirmation\" with title \"Claude Code\"' && afplay -v 0.3 ~/.claude/assets/confirm.mp3"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e 'display notification \"Task completed\" with title \"Claude Code\"' && afplay -v 0.3 ~/.claude/assets/perfect.mp3"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/scripts/statusline.sh"
+  },
+  "enabledPlugins": {},
+  "alwaysThinkingEnabled": true
+}

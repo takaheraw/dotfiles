@@ -1,1 +1,6 @@
-.vim/bundle
+.DS_Store
+*.local
+.zshrc.local
+.zshenv.local
+.mise.toml
+examples/

@@ -1,0 +1,46 @@
+[user]
+  name = takaheraw
+  email = takaheraw@gmail.com
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDKI7Az2qcu8bg5L0y3cn4vBGyryGI9j6h+szSXiTUkt
+[pull]
+  rebase = true
+[push]
+  autoSetupRemote = true
+[init]
+  defaultBranch = main
+[credential]
+  helper = osxkeychain
+[gpg]
+  format = ssh
+[gpg "ssh"]
+  program = "/Applications/1Password.app/Contents/MacOS/op-ssh-sign"
+[commit]
+  gpgsign = true
+[rerere]
+  enabled = true
+[fetch]
+  prune = true
+[alias]
+  st = status
+  co = checkout
+  ci = commit
+  br = branch
+  fpush = push --force-with-lease --force-if-includes
+[filter "lfs"]
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+[pager]
+  diff = delta
+  log = delta
+  reflog = delta
+  show = delta
+[delta]
+  navigate = true
+  side-by-side = true
+  line-numbers = true
+[interactive]
+  diffFilter = delta --color-only
+[includeIf "gitdir:~/ghq/github.com-work/"]
+  path = ~/.config/git/config_work
