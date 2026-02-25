@@ -1,6 +1,6 @@
 [user]
   name = takaheraw
-  email = takaheraw@gmail.com
+  email = 703078+takaheraw@users.noreply.github.com
   signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDKI7Az2qcu8bg5L0y3cn4vBGyryGI9j6h+szSXiTUkt
 [pull]
   rebase = true

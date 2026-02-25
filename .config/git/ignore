@@ -2,3 +2,4 @@
 .mise.toml
 **/.claude/settings.local.json
 *.rej
+.config/git/config_work
