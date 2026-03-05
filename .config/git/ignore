@@ -3,3 +3,5 @@
 **/.claude/settings.local.json
 *.rej
 .config/git/config_work
+.mcp.json
+.serena/
