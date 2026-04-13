@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "skills": {
+    "dd-apm": {
+      "source": "datadog-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "b7541c1c6b045770c03a5653afd9271704cd8880b4ba7ef4d31e88496cb328cf"
+    },
+    "dd-docs": {
+      "source": "datadog-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "0c2a584c08e2611e71cc2df9f991f68681a79ef707e4a3fe5e296daa94db1b81"
+    },
+    "dd-logs": {
+      "source": "datadog-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "89d407465647a9b511d862898ff59a45ad732ec4feadedb90e55e6bb63f653f1"
+    },
+    "dd-monitors": {
+      "source": "datadog-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "8cfc5ffaadf5aaa389b04a14c9d70bdf9e7154e63db28d1af3229cdd661fdb19"
+    },
+    "dd-pup": {
+      "source": "datadog-labs/agent-skills",
+      "sourceType": "github",
+      "computedHash": "74d2b6f0b85e8b77605480ddfd565f56f79e727be290c54e894fcdf177ab89da"
+    }
+  }
+}

@@ -24,10 +24,13 @@
 
 ## 機能実装ワークフロー
 
-1. **計画**: `planner` エージェントで実装計画を作成（依存関係・リスク特定、フェーズ分割）
-2. **TDD**: `tdd-guide` エージェントで RED → GREEN → REFACTOR サイクル
-3. **レビュー**: コード変更後に `code-reviewer` エージェントで品質チェック
-4. **コミット**: `/semantic-commit` で論理単位に分割してコミット
+1. **発想**: `superpowers:brainstorming` スキルで要件・意図・設計を探索
+2. **計画**: `superpowers:writing-plans` スキルで実装計画を作成（依存関係・リスク特定、フェーズ分割）
+3. **TDD**: `superpowers:test-driven-development` スキルで RED → GREEN → REFACTOR サイクル
+4. **実行**: `superpowers:executing-plans` スキルでレビューチェックポイント付き実装
+5. **レビュー**: `superpowers:requesting-code-review` スキルで品質チェック
+6. **完了検証**: `superpowers:verification-before-completion` スキルで成功宣言前に検証
+7. **コミット**: `/commit` で論理単位に分割してコミット（push + PR まで一気通貫する場合は `/commit-push-pr`）
 
 ## アトリビューション
 

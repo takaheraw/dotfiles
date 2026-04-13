@@ -19,3 +19,12 @@ fd = "latest"
 lazygit = "latest"
 yazi = "latest"
 uv = "latest"
+
+# npm global packages managed by mise
+"npm:@playwright/cli" = "latest"
+"npm:@github/copilot" = "latest"
+"npm:@google/gemini-cli" = "latest"
+"npm:@openai/codex" = "latest"
+
+# datadog agent skills clis (pup)
+"github:datadog-labs/pup" = "latest"

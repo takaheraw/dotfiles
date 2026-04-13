@@ -5,6 +5,7 @@
     "BASH_MAX_TIMEOUT_MS": "600000",
     "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "true",
     "CLAUDE_CODE_ENABLE_TASKS": "true",
+    "ENABLE_TOOL_SEARCH": "true",
     "SHELL": "/opt/homebrew/bin/zsh"
   },
   "includeCoAuthoredBy": false,
@@ -241,6 +242,23 @@
     "type": "command",
     "command": "~/.claude/scripts/statusline.sh"
   },
-  "enabledPlugins": {},
+  "enabledPlugins": {
+    "ruby-lsp@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true,
+    "commit-commands@claude-plugins-official": true,
+    "code-review@claude-plugins-official": true,
+    "code-simplifier@claude-plugins-official": true,
+    "pr-review-toolkit@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "agent-plugins-for-aws": {
+      "source": {
+        "source": "github",
+        "repo": "awslabs/agent-plugins"
+      }
+    }
+  },
   "alwaysThinkingEnabled": true
 }
