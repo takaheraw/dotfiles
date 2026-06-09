@@ -1,0 +1,8 @@
+# hunk (git diff/show pager) settings
+# Docs: https://github.com/modem-dev/hunk
+# git pager wiring is in ../git/config ([pager] diff/show = hunk pager)
+
+theme = "catppuccin-mocha"
+mode = "split"          # side-by-side layout (mirrors the old delta side-by-side)
+line_numbers = true
+wrap_lines = false      # truncate long lines instead of wrapping

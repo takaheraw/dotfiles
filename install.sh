@@ -57,7 +57,7 @@ for f in .zshrc .zshenv .vimrc; do
 done
 
 # --- .config directories (file-level recursive symlinks) ---
-config_dirs=("ghostty" "git" "mise" "sheldon")
+config_dirs=("ghostty" "git" "hunk" "mise" "sheldon")
 for dir in "${config_dirs[@]}"; do
   src_dir="$DOTFILES_DIR/.config/$dir"
   [ -d "$src_dir" ] || continue
