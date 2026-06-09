@@ -44,13 +44,13 @@ mise install --yes
 
 ### Tool Management Split
 
-- **mise** (`.config/mise/config.toml`): Languages (node, python, ruby, go, deno) and CLI tools (gh, ghq, fzf, eza, ripgrep, delta, bat, fd, jq, lazygit, yazi, uv, terraform)
+- **mise** (`.config/mise/config.toml`): Languages (node, python, ruby, go, deno) and CLI tools (gh, ghq, fzf, eza, ripgrep, delta, hunk, bat, fd, jq, lazygit, yazi, uv, terraform)
 - **Homebrew**: System-level tools not in mise (git, curl, awscli)
 - **sheldon** (`.config/sheldon/plugins.toml`): zsh plugins only (zsh-defer, autosuggestions, syntax-highlighting, pure prompt)
 
 ### Git Config
 
-XDG compliant at `.config/git/config` (not `~/.gitconfig`). Uses `includeIf` for work-specific config (`config_work`). Delta configured as pager for diffs.
+XDG compliant at `.config/git/config` (not `~/.gitconfig`). Uses `includeIf` for work-specific config (`config_work`). hunk is the pager for `diff`/`show` (configured in `.config/hunk/config.toml`); delta for `log`/`reflog`.
 
 ### Secrets
 

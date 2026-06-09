@@ -39,6 +39,7 @@ dotfiles/
 │   │   ├── config                # gitconfig（XDG 準拠）
 │   │   ├── config_work           # 仕事用 gitconfig
 │   │   └── ignore                # グローバル gitignore
+│   ├── hunk/config.toml          # diff pager 設定（テーマ・レイアウト）
 │   ├── mise/config.toml          # ツール定義
 │   └── sheldon/plugins.toml      # zsh プラグイン定義
 ├── .zsh/
@@ -63,7 +64,7 @@ dotfiles/
 |---------|--------|
 | 言語 | node, python, ruby, go, deno |
 | パッケージマネージャ | pnpm, uv |
-| CLI | gh, ghq, fzf, jq, eza, ripgrep, bat, fd, delta |
+| CLI | gh, ghq, fzf, jq, eza, ripgrep, bat, fd, delta, hunk |
 | インフラ | terraform |
 | TUI | lazygit, yazi |
 
