@@ -48,10 +48,11 @@ dotfiles/
 │       ├── completion.zsh        # 補完設定（遅延読込）
 │       └── git.zsh              # git エイリアス（遅延読込）
 └── .claude/
-    ├── agents/                   # Claude Code エージェント
-    ├── commands/                 # Claude Code コマンド
     ├── rules/                    # Claude Code ルール
-    └── skills/                   # Claude Code スキル
+    ├── scripts/                  # フック用スクリプト（deny-check 等）
+    ├── skills/                   # Claude Code スキル
+    ├── assets/                   # 通知音
+    └── settings.json             # Claude Code 設定（権限・フック・プラグイン）
 ```
 
 ## ツール管理（mise）
