@@ -21,6 +21,7 @@ yazi = "latest"
 uv = "latest"
 
 # npm global packages managed by mise
+"npm:hunkdiff" = "latest"
 "npm:@playwright/cli" = "latest"
 "npm:@github/copilot" = "latest"
 "npm:@google/gemini-cli" = "latest"
