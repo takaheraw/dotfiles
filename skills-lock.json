@@ -4,27 +4,38 @@
     "dd-apm": {
       "source": "datadog-labs/agent-skills",
       "sourceType": "github",
-      "computedHash": "b7541c1c6b045770c03a5653afd9271704cd8880b4ba7ef4d31e88496cb328cf"
+      "skillPath": "dd-apm/SKILL.md",
+      "computedHash": "d8866e4501240a7702cb553428e231de4ed04fa301f03a8e885f8b2b27509027"
     },
     "dd-docs": {
       "source": "datadog-labs/agent-skills",
       "sourceType": "github",
+      "skillPath": "dd-docs/SKILL.md",
       "computedHash": "0c2a584c08e2611e71cc2df9f991f68681a79ef707e4a3fe5e296daa94db1b81"
     },
     "dd-logs": {
       "source": "datadog-labs/agent-skills",
       "sourceType": "github",
-      "computedHash": "89d407465647a9b511d862898ff59a45ad732ec4feadedb90e55e6bb63f653f1"
+      "skillPath": "dd-logs/SKILL.md",
+      "computedHash": "3c6cca0a63ddc578cb4e6f198f891442f06144c8b3d82a72ba1a23ec0878819b"
     },
     "dd-monitors": {
       "source": "datadog-labs/agent-skills",
       "sourceType": "github",
-      "computedHash": "8cfc5ffaadf5aaa389b04a14c9d70bdf9e7154e63db28d1af3229cdd661fdb19"
+      "skillPath": "dd-monitors/SKILL.md",
+      "computedHash": "9af8e93f729790c665d7deeb29a496f0e53684b4e1a4974b129c05a99865e2fa"
     },
     "dd-pup": {
       "source": "datadog-labs/agent-skills",
       "sourceType": "github",
-      "computedHash": "74d2b6f0b85e8b77605480ddfd565f56f79e727be290c54e894fcdf177ab89da"
+      "skillPath": "dd-pup/SKILL.md",
+      "computedHash": "9a40c2e530747cab24e115b5571d49035da84136aef136ac4fac7facd19f0410"
+    },
+    "postgres": {
+      "source": "planetscale/database-skills",
+      "sourceType": "github",
+      "skillPath": "skills/postgres/SKILL.md",
+      "computedHash": "2acf9fae4fcdb6c392923708b67234828f8a9f10b10dfa5d228eaab6e9108245"
     }
   }
 }

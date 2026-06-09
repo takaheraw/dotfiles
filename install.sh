@@ -96,6 +96,16 @@ info "Installing datadog agent skills..."
   --full-depth -y)
 ok "Datadog agent skills installed"
 
+# --- Install planetscale database skills ---
+# Same `skills add` mechanism as datadog: skills-lock.json is the source of truth,
+# .agents/skills/* and .claude/skills/postgres are regenerated on each run.
+# Upstream: https://github.com/planetscale/database-skills (postgres only)
+info "Installing planetscale database skills..."
+(cd "$DOTFILES_DIR" && mise exec -- npx -y skills add planetscale/database-skills \
+  --skill postgres \
+  --full-depth -y)
+ok "Planetscale database skills installed"
+
 # --- Install playwright-cli skill (bundled with @playwright/cli npm package) ---
 # Materializes .claude/skills/playwright-cli/ inside $DOTFILES_DIR (gitignored).
 if mise exec -- bash -c 'command -v playwright-cli' >/dev/null 2>&1; then
