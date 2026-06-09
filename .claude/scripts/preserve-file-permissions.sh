@@ -19,7 +19,7 @@ echo "[$(date)] Hook: $hook_type, Tool: $tool_name, File: $file_path" >>"$DEBUG_
 
 # ファイル操作系のツールのみ対象
 case "$tool_name" in
-Write | Edit | MultiEdit) ;;
+Write | Edit) ;;
 *)
   # 何もせずに通過
   echo "$input_json"

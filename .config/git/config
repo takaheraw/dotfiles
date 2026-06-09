@@ -32,10 +32,10 @@
   process = git-lfs filter-process
   required = true
 [pager]
-  diff = delta
+  diff = hunk pager
+  show = hunk pager
   log = delta
   reflog = delta
-  show = delta
 [delta]
   navigate = true
   side-by-side = true

@@ -57,7 +57,7 @@ for f in .zshrc .zshenv .vimrc; do
 done
 
 # --- .config directories (file-level recursive symlinks) ---
-config_dirs=("ghostty" "git" "mise" "sheldon")
+config_dirs=("ghostty" "git" "hunk" "mise" "sheldon")
 for dir in "${config_dirs[@]}"; do
   src_dir="$DOTFILES_DIR/.config/$dir"
   [ -d "$src_dir" ] || continue
@@ -95,6 +95,16 @@ info "Installing datadog agent skills..."
   --skill dd-docs \
   --full-depth -y)
 ok "Datadog agent skills installed"
+
+# --- Install planetscale database skills ---
+# Same `skills add` mechanism as datadog: skills-lock.json is the source of truth,
+# .agents/skills/* and .claude/skills/postgres are regenerated on each run.
+# Upstream: https://github.com/planetscale/database-skills (postgres only)
+info "Installing planetscale database skills..."
+(cd "$DOTFILES_DIR" && mise exec -- npx -y skills add planetscale/database-skills \
+  --skill postgres \
+  --full-depth -y)
+ok "Planetscale database skills installed"
 
 # --- Install playwright-cli skill (bundled with @playwright/cli npm package) ---
 # Materializes .claude/skills/playwright-cli/ inside $DOTFILES_DIR (gitignored).

@@ -39,6 +39,7 @@ dotfiles/
 │   │   ├── config                # gitconfig（XDG 準拠）
 │   │   ├── config_work           # 仕事用 gitconfig
 │   │   └── ignore                # グローバル gitignore
+│   ├── hunk/config.toml          # diff pager 設定（テーマ・レイアウト）
 │   ├── mise/config.toml          # ツール定義
 │   └── sheldon/plugins.toml      # zsh プラグイン定義
 ├── .zsh/
@@ -48,10 +49,11 @@ dotfiles/
 │       ├── completion.zsh        # 補完設定（遅延読込）
 │       └── git.zsh              # git エイリアス（遅延読込）
 └── .claude/
-    ├── agents/                   # Claude Code エージェント
-    ├── commands/                 # Claude Code コマンド
     ├── rules/                    # Claude Code ルール
-    └── skills/                   # Claude Code スキル
+    ├── scripts/                  # フック用スクリプト（deny-check 等）
+    ├── skills/                   # Claude Code スキル
+    ├── assets/                   # 通知音
+    └── settings.json             # Claude Code 設定（権限・フック・プラグイン）
 ```
 
 ## ツール管理（mise）
@@ -62,7 +64,7 @@ dotfiles/
 |---------|--------|
 | 言語 | node, python, ruby, go, deno |
 | パッケージマネージャ | pnpm, uv |
-| CLI | gh, ghq, fzf, jq, eza, ripgrep, bat, fd, delta |
+| CLI | gh, ghq, fzf, jq, eza, ripgrep, bat, fd, delta, hunk |
 | インフラ | terraform |
 | TUI | lazygit, yazi |
 
