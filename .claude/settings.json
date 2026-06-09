@@ -1,19 +1,20 @@
 {
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "cleanupPeriodDays": 30,
   "env": {
     "BASH_DEFAULT_TIMEOUT_MS": "600000",
-    "BASH_MAX_TIMEOUT_MS": "600000",
-    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "true",
-    "CLAUDE_CODE_ENABLE_TASKS": "true",
-    "ENABLE_TOOL_SEARCH": "true",
+    "CLAUDE_CODE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "true",
+    "ENABLE_LSP_TOOL": "1",
     "SHELL": "/opt/homebrew/bin/zsh"
   },
-  "includeCoAuthoredBy": false,
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
   "permissions": {
     "allow": [
       "Read",
       "Edit",
-      "MultiEdit",
       "Write",
       "Glob",
       "Grep",
@@ -177,8 +178,7 @@
       "Read(**/.ssh/id_*)",
       "Write(**/.env*)",
       "Write(**/secrets/**)",
-      "Edit(**/.env*)",
-      "MultiEdit(**/.env*)"
+      "Edit(**/.env*)"
     ],
     "ask": []
   },
@@ -195,7 +195,7 @@
         ]
       },
       {
-        "matcher": "Write|Edit|MultiEdit",
+        "matcher": "Write|Edit",
         "hooks": [
           {
             "type": "command",
@@ -206,7 +206,7 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit|Write|MultiEdit",
+        "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
@@ -250,13 +250,30 @@
     "code-review@claude-plugins-official": true,
     "code-simplifier@claude-plugins-official": true,
     "pr-review-toolkit@claude-plugins-official": true,
-    "skill-creator@claude-plugins-official": true
+    "skill-creator@claude-plugins-official": true,
+    "modern-web-guidance@googlechrome": true,
+    "sentry-cli@sentry-cli": true,
+    "codebase-documentor-for-aws@agent-plugins-for-aws": true,
+    "databases-on-aws@agent-plugins-for-aws": true,
+    "deploy-on-aws@agent-plugins-for-aws": true
   },
   "extraKnownMarketplaces": {
     "agent-plugins-for-aws": {
       "source": {
         "source": "github",
         "repo": "awslabs/agent-plugins"
+      }
+    },
+    "googlechrome": {
+      "source": {
+        "source": "github",
+        "repo": "GoogleChrome/modern-web-guidance"
+      }
+    },
+    "sentry-cli": {
+      "source": {
+        "source": "github",
+        "repo": "getsentry/cli"
       }
     }
   },
