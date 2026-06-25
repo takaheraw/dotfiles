@@ -255,9 +255,16 @@
     "sentry-cli@sentry-cli": true,
     "codebase-documentor-for-aws@agent-plugins-for-aws": true,
     "databases-on-aws@agent-plugins-for-aws": true,
-    "deploy-on-aws@agent-plugins-for-aws": true
+    "deploy-on-aws@agent-plugins-for-aws": true,
+    "crit@crit": true
   },
   "extraKnownMarketplaces": {
+    "crit": {
+      "source": {
+        "source": "github",
+        "repo": "tomasz-tomczyk/crit"
+      }
+    },
     "agent-plugins-for-aws": {
       "source": {
         "source": "github",
