@@ -6,7 +6,7 @@
     },
     "deepwiki": {
       "command": "npx",
-      "args": ["-y", "mcp-deepwiki@latest"]
+      "args": ["-y", "mcp-deepwiki@0.0.10"]
     },
     "sequential-thinking": {
       "command": "npx",
@@ -28,7 +28,7 @@
     "awslabs.aws-pricing-mcp-server": {
       "command": "uvx",
       "args": [
-         "awslabs.aws-pricing-mcp-server@latest"
+         "awslabs.aws-pricing-mcp-server@0.1.31"
       ],
       "env": {
         "FASTMCP_LOG_LEVEL": "ERROR",
@@ -43,7 +43,7 @@
       "disabled": false,
       "command": "uvx",
       "args": [
-        "awslabs.cloudwatch-mcp-server@latest"
+        "awslabs.cloudwatch-mcp-server@0.1.4"
       ],
       "env": {
         "AWS_PROFILE": "default",
@@ -53,7 +53,7 @@
     },
     "awslabs.security-agent-mcp-server": {
       "command": "uvx",
-      "args": ["awslabs.security-agent-mcp-server@latest"],
+      "args": ["awslabs.security-agent-mcp-server@0.1.2"],
       "env": {
         "AWS_PROFILE": "default",
         "AWS_REGION": "ap-northeast-1",
@@ -63,7 +63,7 @@
     "awslabs.billing-cost-management-mcp-server": {
       "command": "uvx",
       "args": [
-         "awslabs.billing-cost-management-mcp-server@latest"
+         "awslabs.billing-cost-management-mcp-server@0.0.24"
       ],
       "env": {
         "FASTMCP_LOG_LEVEL": "ERROR",

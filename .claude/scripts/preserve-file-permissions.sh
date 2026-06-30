@@ -1,10 +1,13 @@
 #!/bin/bash
 
-# デバッグログ
-DEBUG_LOG="/tmp/claude_permissions_debug.log"
+# デバッグログ（DEBUG=true のときのみ書き出す）
+DEBUG=false
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/claude"
+mkdir -p "$CACHE_DIR"
+DEBUG_LOG="$CACHE_DIR/permissions_debug.log"
 
 # 権限を保存するための一時ファイル
-PERMISSIONS_CACHE="/tmp/claude_file_permissions.txt"
+PERMISSIONS_CACHE="$CACHE_DIR/file_permissions.txt"
 
 # 標準入力から JSON を読み込み
 input_json=$(cat)
@@ -15,7 +18,7 @@ tool_name=$(echo "$input_json" | jq -r '.tool_name // ""')
 file_path=$(echo "$input_json" | jq -r '.tool_input.file_path // ""')
 
 # デバッグ情報を記録
-echo "[$(date)] Hook: $hook_type, Tool: $tool_name, File: $file_path" >>"$DEBUG_LOG"
+[ "$DEBUG" = "true" ] && echo "[$(date)] Hook: $hook_type, Tool: $tool_name, File: $file_path" >>"$DEBUG_LOG"
 
 # ファイル操作系のツールのみ対象
 case "$tool_name" in
@@ -42,7 +45,7 @@ if [ "$hook_type" = "PreToolUse" ]; then
       # ファイルパスと権限を保存
       echo "${file_path}:${current_perms}" >>"$PERMISSIONS_CACHE"
       echo "Saved permissions for $file_path: $current_perms" >&2
-      echo "[$(date)] PreToolUse: Saved $file_path with permissions $current_perms" >>"$DEBUG_LOG"
+      [ "$DEBUG" = "true" ] && echo "[$(date)] PreToolUse: Saved $file_path with permissions $current_perms" >>"$DEBUG_LOG"
     fi
   fi
 
@@ -57,14 +60,14 @@ elif [ "$hook_type" = "PostToolUse" ]; then
         chmod "$saved_perms" "$file_path" 2>/dev/null
         if [ $? -eq 0 ]; then
           echo "Restored permissions for $file_path: $saved_perms" >&2
-          echo "[$(date)] PostToolUse: Restored $file_path to permissions $saved_perms" >>"$DEBUG_LOG"
+          [ "$DEBUG" = "true" ] && echo "[$(date)] PostToolUse: Restored $file_path to permissions $saved_perms" >>"$DEBUG_LOG"
 
           # バックグラウンドで 3 秒待ってから再度権限を設定
           (
             sleep 3
             chmod "$saved_perms" "$file_path" 2>/dev/null
             if [ $? -eq 0 ]; then
-              echo "[$(date)] PostToolUse: Re-restored $file_path to permissions $saved_perms (delayed 3s)" >>"$DEBUG_LOG"
+              [ "$DEBUG" = "true" ] && echo "[$(date)] PostToolUse: Re-restored $file_path to permissions $saved_perms (delayed 3s)" >>"$DEBUG_LOG"
             fi
           ) &
 

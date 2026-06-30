@@ -10,7 +10,9 @@
 #   - context_window.used_percentage : 事前計算済みの使用率（窓サイズ 200K/1M を自動考慮）
 #   - rate_limits.*              : claude.ai サブスクのみ、最初の API 応答後に出現
 
-readonly CACHE_FILE="/tmp/claude_statusline_cost_cache"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/claude"
+mkdir -p "$CACHE_DIR"
+readonly CACHE_FILE="$CACHE_DIR/statusline_cost_cache"
 readonly CACHE_TTL=60 # seconds
 
 # ccusage で当日の合計コストを取得（外部依存。無ければ 0）
@@ -22,7 +24,7 @@ calculate_daily_cost() {
   today_hyphen=$(date +%Y-%m-%d) # JSON 内の日付形式
 
   local ccusage_output
-  ccusage_output=$(npx -y ccusage@latest daily --json --since "$today" --until "$today" 2>/dev/null)
+  ccusage_output=$(npx -y ccusage@20.0.14 daily --json --since "$today" --until "$today" 2>/dev/null)
 
   if [ -z "$ccusage_output" ] || [ "$ccusage_output" = "[]" ]; then
     echo "0"

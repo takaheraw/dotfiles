@@ -72,11 +72,14 @@ while IFS= read -r pattern; do
   fi
 done <<<"$deny_patterns"
 
-# コマンドを論理演算子で分割し、各部分もチェック
-# セミコロン、&& と || で分割（パイプ | と単一 & は分割しない）
-temp_command="${command//;/$'\n'}"
+# コマンドを論理演算子・パイプで分割し、各部分もチェック
+# セミコロン、&&、||、| で分割（単一 & は分割しない）
+# まず || を一時トークンに置換してから | を分割（|| の誤分割を防止）
+temp_command="${command//||/__OR_TOKEN__}"
+temp_command="${temp_command//|/$'\n'}"
+temp_command="${temp_command//__OR_TOKEN__/$'\n'}"
+temp_command="${temp_command//;/$'\n'}"
 temp_command="${temp_command//&&/$'\n'}"
-temp_command="${temp_command//\|\|/$'\n'}"
 
 IFS=$'\n'
 for cmd_part in $temp_command; do
