@@ -7,37 +7,10 @@ info() { printf '\033[34m[INFO]\033[0m %s\n' "$1"; }
 warn() { printf '\033[33m[WARN]\033[0m %s\n' "$1"; }
 ok()   { printf '\033[32m[ OK ]\033[0m %s\n' "$1"; }
 
-# --- Homebrew ---
-if ! command -v brew &>/dev/null; then
-  info "Installing Homebrew..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  eval "$(/opt/homebrew/bin/brew shellenv)"
-  ok "Homebrew installed"
-else
-  ok "Homebrew already installed"
-fi
+# --- Shared helpers ---
 
-# --- mise ---
-if ! command -v mise &>/dev/null; then
-  info "Installing mise..."
-  curl -fsSL https://mise.run | sh
-  export PATH="$HOME/.local/bin:$PATH"
-  ok "mise installed"
-else
-  ok "mise already installed"
-fi
-
-# --- sheldon ---
-if ! command -v sheldon &>/dev/null; then
-  info "Installing sheldon..."
-  curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
-    | bash -s -- --repo rossmacarthur/sheldon --to "$HOME/.local/bin"
-  ok "sheldon installed"
-else
-  ok "sheldon already installed"
-fi
-
-# --- Symlink helper ---
+# link_file <src> <dst>
+# Creates a symlink, backing up existing non-symlink files.
 link_file() {
   local src="$1" dst="$2"
   if [ -L "$dst" ]; then
@@ -51,6 +24,64 @@ link_file() {
   ok "Linked $dst -> $src"
 }
 
+# ensure_cmd <cmd> <label> <install_body>
+# Installs <cmd> if missing, otherwise reports it already present.
+ensure_cmd() {
+  local cmd="$1" label="$2"
+  shift 2
+  if ! command -v "$cmd" &>/dev/null; then
+    info "Installing $label..."
+    "$@"
+    ok "$label installed"
+  else
+    ok "$label already installed"
+  fi
+}
+
+# link_dir <src_base> <dst_base> <dirs_array_name> [find_extra_args...]
+# Recursively symlinks files from <src_base>/<dir> to <dst_base>/<dir>.
+link_dir() {
+  local src_base="$1" dst_base="$2" dirs_var="$3"
+  shift 3
+  local find_types=("$@")
+  [[ ${#find_types[@]} -eq 0 ]] && find_types=(-type f)
+  local -n _dirs="$dirs_var"
+  for dir in "${_dirs[@]}"; do
+    local src_dir="$src_base/$dir"
+    [ -d "$src_dir" ] || continue
+    while IFS= read -r -d '' file; do
+      local rel="${file#"$src_dir/"}"
+      link_file "$file" "$dst_base/$dir/$rel"
+    done < <(find "$src_dir" "${find_types[@]}" -print0)
+  done
+}
+
+# install_skills <label> <repo> <skills...>
+# Wraps the `npx skills add` pattern used for agent skill bundles.
+install_skills() {
+  local label="$1" repo="$2"
+  shift 2
+  local skill_args=()
+  for s in "$@"; do
+    skill_args+=(--skill "$s")
+  done
+  info "Installing $label..."
+  (cd "$DOTFILES_DIR" && mise exec -- npx -y skills add "$repo" \
+    "${skill_args[@]}" --full-depth -y)
+  ok "$label installed"
+}
+
+SHELDON_INSTALL_URL="${SHELDON_INSTALL_URL:-https://rossmacarthur.github.io/install/crate.sh}"
+
+# --- Install prerequisites ---
+_install_brew()    { /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"; eval "$(/opt/homebrew/bin/brew shellenv)"; }
+_install_mise()    { curl -fsSL https://mise.run | sh; export PATH="$HOME/.local/bin:$PATH"; }
+_install_sheldon() { curl --proto '=https' -fLsS "$SHELDON_INSTALL_URL" | bash -s -- --repo rossmacarthur/sheldon --to "$HOME/.local/bin"; }
+
+ensure_cmd brew    Homebrew _install_brew
+ensure_cmd mise    mise     _install_mise
+ensure_cmd sheldon sheldon  _install_sheldon
+
 # --- Dotfiles (top-level) ---
 for f in .zshrc .zshenv .vimrc; do
   [ -f "$DOTFILES_DIR/$f" ] && link_file "$DOTFILES_DIR/$f" "$HOME/$f"
@@ -58,53 +89,21 @@ done
 
 # --- .config directories (file-level recursive symlinks) ---
 config_dirs=("ghostty" "git" "hunk" "mise" "sheldon")
-for dir in "${config_dirs[@]}"; do
-  src_dir="$DOTFILES_DIR/.config/$dir"
-  [ -d "$src_dir" ] || continue
-  while IFS= read -r -d '' file; do
-    rel="${file#"$src_dir/"}"
-    link_file "$file" "$HOME/.config/$dir/$rel"
-  done < <(find "$src_dir" -type f -print0)
-done
+link_dir "$DOTFILES_DIR/.config" "$HOME/.config" config_dirs
 
 # --- .zsh directory ---
-for subdir in sync defer; do
-  src_dir="$DOTFILES_DIR/.zsh/$subdir"
-  [ -d "$src_dir" ] || continue
-  while IFS= read -r -d '' file; do
-    rel="${file#"$src_dir/"}"
-    link_file "$file" "$HOME/.zsh/$subdir/$rel"
-  done < <(find "$src_dir" -type f -print0)
-done
+zsh_dirs=("sync" "defer")
+link_dir "$DOTFILES_DIR/.zsh" "$HOME/.zsh" zsh_dirs
 
 # --- Install mise tools (must run before skills install; needs symlinked mise config) ---
 info "Installing mise tools..."
 mise install --yes
 
-# --- Install datadog agent skills ---
-# Note: `skills experimental_install` ignores --full-depth state stored in skills-lock.json,
-# so we re-run the original `skills add` command directly. skills-lock.json is still committed
-# as an audit trail and is regenerated on each run.
-# Upstream: https://github.com/datadog-labs/agent-skills
-info "Installing datadog agent skills..."
-(cd "$DOTFILES_DIR" && mise exec -- npx -y skills add datadog-labs/agent-skills \
-  --skill dd-pup \
-  --skill dd-monitors \
-  --skill dd-logs \
-  --skill dd-apm \
-  --skill dd-docs \
-  --full-depth -y)
-ok "Datadog agent skills installed"
-
-# --- Install planetscale database skills ---
-# Same `skills add` mechanism as datadog: skills-lock.json is the source of truth,
-# .agents/skills/* and .claude/skills/postgres are regenerated on each run.
-# Upstream: https://github.com/planetscale/database-skills (postgres only)
-info "Installing planetscale database skills..."
-(cd "$DOTFILES_DIR" && mise exec -- npx -y skills add planetscale/database-skills \
-  --skill postgres \
-  --full-depth -y)
-ok "Planetscale database skills installed"
+# --- Install agent skills ---
+# skills-lock.json is the audit trail; `skills add` is re-run directly
+# because `skills experimental_install` ignores --full-depth state.
+install_skills "Datadog agent skills"      datadog-labs/agent-skills   dd-pup dd-monitors dd-logs dd-apm dd-docs
+install_skills "Planetscale database skills" planetscale/database-skills postgres
 
 # --- Install playwright-cli skill (bundled with @playwright/cli npm package) ---
 # Materializes .claude/skills/playwright-cli/ inside $DOTFILES_DIR (gitignored).
@@ -129,14 +128,7 @@ done
 
 # --- .claude directory (-type l picks up dd-* symlinks at top of skills/) ---
 claude_dirs=("agents" "assets" "commands" "rules" "scripts" "skills")
-for dir in "${claude_dirs[@]}"; do
-  src_dir="$DOTFILES_DIR/.claude/$dir"
-  [ -d "$src_dir" ] || continue
-  while IFS= read -r -d '' file; do
-    rel="${file#"$src_dir/"}"
-    link_file "$file" "$HOME/.claude/$dir/$rel"
-  done < <(find "$src_dir" \( -type f -o -type l \) -print0)
-done
+link_dir "$DOTFILES_DIR/.claude" "$HOME/.claude" claude_dirs \( -type f -o -type l \)
 # settings.json (single file)
 [ -f "$DOTFILES_DIR/.claude/settings.json" ] && \
   link_file "$DOTFILES_DIR/.claude/settings.json" "$HOME/.claude/settings.json"

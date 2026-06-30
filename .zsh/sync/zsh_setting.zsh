@@ -31,5 +31,3 @@ unsetopt nomatch
 autoload -Uz colors
 colors
 
-# --- Completion colors ---
-zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"

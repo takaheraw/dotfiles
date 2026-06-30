@@ -8,9 +8,9 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 # --- mise ---
 eval "$(mise activate zsh)"
 
-# --- sheldon ---
+# --- sheldon (auto-install if missing) ---
 if [ ! $commands[sheldon] ]; then
-  curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
+  curl --proto '=https' -fLsS "${SHELDON_INSTALL_URL:-https://rossmacarthur.github.io/install/crate.sh}" \
     | bash -s -- --repo rossmacarthur/sheldon --to ~/.local/bin
 fi
 eval "$(sheldon source)"
