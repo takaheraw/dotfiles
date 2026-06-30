@@ -1,4 +1,5 @@
 #!/bin/bash
+set -uo pipefail
 #
 # Claude Code statusline。
 # stdin にセッションデータの JSON が渡される。フィールド定義:
@@ -9,6 +10,11 @@
 #     ネイティブの cost.total_cost_usd は現在のセッション分のみのため使わない。
 #   - context_window.used_percentage : 事前計算済みの使用率（窓サイズ 200K/1M を自動考慮）
 #   - rate_limits.*              : claude.ai サブスクのみ、最初の API 応答後に出現
+
+if ! command -v jq >/dev/null 2>&1; then
+  echo '🤖 statusline: jq not found'
+  exit 0
+fi
 
 readonly CACHE_FILE="/tmp/claude_statusline_cost_cache"
 readonly CACHE_TTL=60 # seconds
@@ -44,7 +50,7 @@ get_cached_cost() {
     local cache_date cache_cost cache_age
     cache_date=$(head -1 "$CACHE_FILE" 2>/dev/null)
     cache_cost=$(tail -1 "$CACHE_FILE" 2>/dev/null)
-    cache_age=$(($(date +%s) - $(stat -f %m "$CACHE_FILE" 2>/dev/null || echo 0)))
+    cache_age=$(($(date +%s) - $(stat -f %m "$CACHE_FILE" 2>/dev/null || stat -c %Y "$CACHE_FILE" 2>/dev/null || echo 0)))
 
     if [ "$cache_date" = "$today" ] && [ "$cache_age" -le "$CACHE_TTL" ]; then
       echo "${cache_cost:-0}"

@@ -1,27 +1,49 @@
 #!/bin/bash
+set -uo pipefail
 
 # デバッグログ出力（本番環境ではコメントアウト）
 # echo "$(date): deny-check.sh called" >> ~/.claude/deny-check.log
 DEBUG=false
+
+# jq is required to parse JSON input and settings
+if ! command -v jq >/dev/null 2>&1; then
+  echo "Error: jq is required by deny-check.sh but not found in PATH" >&2
+  exit 2
+fi
 
 # JSON 入力を読み取り、コマンドとツール名を抽出
 input=$(cat)
 
 # デバッグ: 入力を記録
 # echo "Input received: $input" >> ~/.claude/deny-check.log
-command=$(echo "$input" | jq -r '.tool_input.command' 2>/dev/null || echo "")
-tool_name=$(echo "$input" | jq -r '.tool_name' 2>/dev/null || echo "")
+if ! tool_name=$(echo "$input" | jq -r '.tool_name'); then
+  echo "Error: failed to parse tool_name from input JSON" >&2
+  exit 2
+fi
 
 # Bash コマンドのみをチェック
 if [ "$tool_name" != "Bash" ]; then
   exit 0
 fi
 
+if ! command=$(echo "$input" | jq -r '.tool_input.command'); then
+  echo "Error: failed to parse command from input JSON" >&2
+  exit 2
+fi
+
 # settings.json から拒否パターンを読み取り
 settings_file="$HOME/.claude/settings.json"
 
+if [ ! -f "$settings_file" ]; then
+  echo "Error: settings file not found: $settings_file (denying command)" >&2
+  exit 2
+fi
+
 # Bash コマンドの全拒否パターンを取得
-deny_patterns=$(jq -r '.permissions.deny[] | select(startswith("Bash(")) | gsub("^Bash\\("; "") | gsub("\\)$"; "")' "$settings_file" 2>/dev/null)
+if ! deny_patterns=$(jq -r '.permissions.deny[] | select(startswith("Bash(")) | gsub("^Bash\\("; "") | gsub("\\)$"; "")' "$settings_file"); then
+  echo "Error: failed to parse deny patterns from $settings_file (denying command)" >&2
+  exit 2
+fi
 
 # コマンドが拒否パターンにマッチするかチェックする関数
 matches_deny_pattern() {

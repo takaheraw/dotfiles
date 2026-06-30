@@ -5,13 +5,16 @@ DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 info() { printf '\033[34m[INFO]\033[0m %s\n' "$1"; }
 warn() { printf '\033[33m[WARN]\033[0m %s\n' "$1"; }
+err()  { printf '\033[31m[ERR ]\033[0m %s\n' "$1" >&2; }
 ok()   { printf '\033[32m[ OK ]\033[0m %s\n' "$1"; }
 
 # --- Homebrew ---
 if ! command -v brew &>/dev/null; then
   info "Installing Homebrew..."
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-  eval "$(/opt/homebrew/bin/brew shellenv)"
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)" \
+    || { err "Homebrew installation failed"; exit 1; }
+  eval "$(/opt/homebrew/bin/brew shellenv)" \
+    || { err "Failed to initialise Homebrew shell environment"; exit 1; }
   ok "Homebrew installed"
 else
   ok "Homebrew already installed"
@@ -20,7 +23,8 @@ fi
 # --- mise ---
 if ! command -v mise &>/dev/null; then
   info "Installing mise..."
-  curl -fsSL https://mise.run | sh
+  curl -fsSL https://mise.run | sh \
+    || { err "mise installation failed"; exit 1; }
   export PATH="$HOME/.local/bin:$PATH"
   ok "mise installed"
 else
@@ -31,7 +35,8 @@ fi
 if ! command -v sheldon &>/dev/null; then
   info "Installing sheldon..."
   curl --proto '=https' -fLsS https://rossmacarthur.github.io/install/crate.sh \
-    | bash -s -- --repo rossmacarthur/sheldon --to "$HOME/.local/bin"
+    | bash -s -- --repo rossmacarthur/sheldon --to "$HOME/.local/bin" \
+    || { err "sheldon installation failed"; exit 1; }
   ok "sheldon installed"
 else
   ok "sheldon already installed"
@@ -79,7 +84,8 @@ done
 
 # --- Install mise tools (must run before skills install; needs symlinked mise config) ---
 info "Installing mise tools..."
-mise install --yes
+mise install --yes \
+  || { err "mise tool installation failed (see errors above)"; exit 1; }
 
 # --- Install datadog agent skills ---
 # Note: `skills experimental_install` ignores --full-depth state stored in skills-lock.json,
@@ -87,13 +93,16 @@ mise install --yes
 # as an audit trail and is regenerated on each run.
 # Upstream: https://github.com/datadog-labs/agent-skills
 info "Installing datadog agent skills..."
-(cd "$DOTFILES_DIR" && mise exec -- npx -y skills add datadog-labs/agent-skills \
+if ! (cd "$DOTFILES_DIR" && mise exec -- npx -y skills add datadog-labs/agent-skills \
   --skill dd-pup \
   --skill dd-monitors \
   --skill dd-logs \
   --skill dd-apm \
   --skill dd-docs \
-  --full-depth -y)
+  --full-depth -y); then
+  err "Datadog agent skills installation failed"
+  exit 1
+fi
 ok "Datadog agent skills installed"
 
 # --- Install planetscale database skills ---
@@ -101,16 +110,22 @@ ok "Datadog agent skills installed"
 # .agents/skills/* and .claude/skills/postgres are regenerated on each run.
 # Upstream: https://github.com/planetscale/database-skills (postgres only)
 info "Installing planetscale database skills..."
-(cd "$DOTFILES_DIR" && mise exec -- npx -y skills add planetscale/database-skills \
+if ! (cd "$DOTFILES_DIR" && mise exec -- npx -y skills add planetscale/database-skills \
   --skill postgres \
-  --full-depth -y)
+  --full-depth -y); then
+  err "Planetscale database skills installation failed"
+  exit 1
+fi
 ok "Planetscale database skills installed"
 
 # --- Install playwright-cli skill (bundled with @playwright/cli npm package) ---
 # Materializes .claude/skills/playwright-cli/ inside $DOTFILES_DIR (gitignored).
 if mise exec -- bash -c 'command -v playwright-cli' >/dev/null 2>&1; then
   info "Installing playwright-cli skill..."
-  (cd "$DOTFILES_DIR" && mise exec -- playwright-cli install --skills)
+  if ! (cd "$DOTFILES_DIR" && mise exec -- playwright-cli install --skills); then
+    err "playwright-cli skill installation failed"
+    exit 1
+  fi
   ok "playwright-cli skill installed"
 else
   warn "playwright-cli not found in mise; skipping skill install"
