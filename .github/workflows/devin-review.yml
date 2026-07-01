@@ -1,0 +1,37 @@
+name: Devin PR Review
+
+# 「devin-review」ラベルを PR に付けたタイミングだけ発火する（自分のタイミングでトリガー）
+on:
+  pull_request:
+    types: [labeled]
+
+jobs:
+  devin-review:
+    runs-on: ubuntu-latest
+    # 付与されたラベルが devin-review のときだけ実行
+    if: github.event.label.name == 'devin-review'
+    steps:
+      - name: Trigger Devin review session
+        env:
+          DEVIN_API_KEY: ${{ secrets.DEVIN_API_KEY }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        run: |
+          set -euo pipefail
+
+          PROMPT="Review pull request #${PR_NUMBER} (${PR_URL}) in the GitHub repository ${REPO}. \
+          Analyze the diff for bugs, security issues, and code quality problems, \
+          then post your feedback as review comments directly on the PR. \
+          Do NOT push any commits or modify the branch."
+
+          # jq でJSONを安全に組み立て（プロンプト内のクォート/改行をエスケープ）
+          BODY=$(jq -n --arg prompt "$PROMPT" --arg title "Devin review: ${REPO}#${PR_NUMBER}" \
+            '{prompt: $prompt, title: $title, idempotent: true}')
+
+          curl --fail --silent --show-error \
+            --request POST \
+            --url https://api.devin.ai/v1/sessions \
+            --header "Authorization: Bearer ${DEVIN_API_KEY}" \
+            --header "Content-Type: application/json" \
+            --data "$BODY"
