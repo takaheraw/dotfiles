@@ -10,8 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     # 付与されたラベルが devin-review のときだけ実行
     if: github.event.label.name == 'devin-review'
+    # Devin の完了待ちで無限にジョブが動き続けないよう上限を設ける
+    timeout-minutes: 30
     steps:
-      - name: Trigger Devin review session
+      - name: Create Devin review session
+        id: create
         env:
           DEVIN_API_KEY: ${{ secrets.DEVIN_API_KEY }}
           REPO: ${{ github.repository }}
@@ -29,9 +32,54 @@ jobs:
           BODY=$(jq -n --arg prompt "$PROMPT" --arg title "Devin review: ${REPO}#${PR_NUMBER}" \
             '{prompt: $prompt, title: $title, idempotent: true}')
 
-          curl --fail --silent --show-error \
+          RESPONSE=$(curl --fail --silent --show-error \
             --request POST \
             --url https://api.devin.ai/v1/sessions \
             --header "Authorization: Bearer ${DEVIN_API_KEY}" \
             --header "Content-Type: application/json" \
-            --data "$BODY"
+            --data "$BODY")
+
+          echo "$RESPONSE"
+          SESSION_ID=$(echo "$RESPONSE" | jq -r '.session_id')
+          if [ -z "$SESSION_ID" ] || [ "$SESSION_ID" = "null" ]; then
+            echo "::error::Failed to create Devin session"
+            exit 1
+          fi
+          echo "session_id=$SESSION_ID" >> "$GITHUB_OUTPUT"
+
+      - name: Wait for Devin to finish the review
+        env:
+          DEVIN_API_KEY: ${{ secrets.DEVIN_API_KEY }}
+          SESSION_ID: ${{ steps.create.outputs.session_id }}
+        run: |
+          set -euo pipefail
+
+          POLL_INTERVAL=30   # 秒: ポーリング間隔
+          MAX_ATTEMPTS=50    # 30秒 x 50 = 最大約25分待つ（job の timeout-minutes 30 より内側）
+
+          echo "Polling session ${SESSION_ID} until it is done (blocked/finished)..."
+          for i in $(seq 1 "$MAX_ATTEMPTS"); do
+            DETAIL=$(curl --fail --silent --show-error \
+              --url "https://api.devin.ai/v1/sessions/${SESSION_ID}" \
+              --header "Authorization: Bearer ${DEVIN_API_KEY}")
+
+            STATUS=$(echo "$DETAIL" | jq -r '.status_enum')
+            echo "[$i/${MAX_ATTEMPTS}] status_enum=${STATUS}"
+
+            case "$STATUS" in
+              # blocked=タスク完了・次の指示待ち / finished=完了 → どちらも「作業終了」とみなす
+              blocked|finished)
+                echo "Devin has finished the review (status=${STATUS})."
+                exit 0
+                ;;
+              expired|stopped)
+                echo "::error::Devin session ended unexpectedly (status=${STATUS})."
+                exit 1
+                ;;
+            esac
+
+            sleep "$POLL_INTERVAL"
+          done
+
+          echo "::warning::Timed out waiting for Devin to finish. It may still be working; check the session in the Devin app."
+          exit 1
