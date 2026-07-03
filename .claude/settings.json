@@ -73,11 +73,8 @@
       "Bash(chmod -R 777:*)",
       "Bash(chmod 777:*)",
       "Bash(chown -R:*)",
-      "Bash(git checkout:*)",
       "Bash(git config:*)",
-      "Bash(git rebase:*)",
       "Bash(git reset --hard:*)",
-      "Bash(git restore:*)",
       "Bash(git push --force:*)",
       "Bash(git push -f:*)",
       "Bash(gh repo delete:*)",
@@ -284,5 +281,6 @@
       }
     }
   },
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": true,
+  "tui": "fullscreen"
 }
