@@ -173,9 +173,8 @@
       "Read(**/*password*)",
       "Read(**/.aws/**)",
       "Read(**/.ssh/id_*)",
-      "Write(**/.env*)",
-      "Write(**/secrets/**)",
-      "Edit(**/.env*)"
+      "Edit(**/.env*)",
+      "Edit(**/secrets/**)"
     ],
     "ask": []
   },
