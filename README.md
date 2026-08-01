@@ -48,13 +48,44 @@ dotfiles/
 │   └── defer/
 │       ├── completion.zsh        # 補完設定（遅延読込）
 │       └── git.zsh              # git エイリアス（遅延読込）
-└── .claude/
-    ├── rules/                    # Claude Code ルール
-    ├── scripts/                  # フック用スクリプト（deny-check 等）
-    ├── skills/                   # Claude Code スキル
-    ├── assets/                   # 通知音
-    └── settings.json             # Claude Code 設定（権限・フック・プラグイン）
+├── .ai/                          # 共有 AI コンテキスト（単一情報源）
+│   ├── context.md                # プロジェクト概要・アーキテクチャ
+│   ├── rules/                    # コーディングルール（共有）
+│   └── skills/                   # スキル定義（共有）
+├── CLAUDE.md → .ai/context.md    # Claude Code 用（シムリンク）
+├── AGENTS.md → .ai/context.md    # Devin・Codex 等用（シムリンク）
+├── .github/
+│   └── copilot-instructions.md → .ai/context.md  # GitHub Copilot 用
+├── .claude/
+│   ├── rules/ → .ai/rules/*     # 共有ルールへのシムリンク
+│   ├── skills/ → .ai/skills/*   # 共有スキルへのシムリンク
+│   ├── scripts/                  # フック用スクリプト（Claude 固有）
+│   ├── assets/                   # 通知音（Claude 固有）
+│   └── settings.json             # Claude Code 設定（権限・フック・プラグイン）
 ```
+
+### AI エージェントコンテキスト共有
+
+複数の AI エージェント（Claude Code、Devin、Codex、GitHub Copilot など）が同じプロジェクトコンテキストを参照できるよう、`.ai/` ディレクトリを単一情報源として共有:
+
+```
+.ai/context.md   ← 共有コンテキスト（元 CLAUDE.md）
+    ↑ シムリンク
+    ├── CLAUDE.md
+    ├── AGENTS.md
+    └── .github/copilot-instructions.md
+
+.ai/rules/*      ← 共有ルール
+    ↑ シムリンク
+    └── .claude/rules/*
+
+.ai/skills/*     ← 共有スキル
+    ↑ シムリンク
+    └── .claude/skills/*
+```
+
+- **共有コンテンツの編集**: `.ai/` 配下のファイルを直接編集（全エージェントに反映）
+- **エージェント固有設定**: 各エージェントのディレクトリに配置（例: `.claude/settings.json`）
 
 ## ツール管理（mise）
 
@@ -143,3 +174,18 @@ exec zsh
 # シンボリックリンクを再作成（ファイル追加時）
 ./install.sh
 ```
+
+## AI ルール・スキルの追加
+
+```bash
+# 1. .ai/ に共有ルールを追加
+echo "# New Rule" > .ai/rules/new-rule.md
+
+# 2. .claude/rules/ にシムリンクを作成
+ln -s ../../.ai/rules/new-rule.md .claude/rules/new-rule.md
+
+# 3. install.sh を実行して $HOME に反映
+./install.sh
+```
+
+スキルも同様に `.ai/skills/<name>/SKILL.md` に追加し、`.claude/skills/<name>/SKILL.md` からシムリンクを作成する。

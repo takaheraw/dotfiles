@@ -127,7 +127,9 @@ for dir in agents assets commands rules scripts skills; do
   done < <(find "$HOME/.claude/$dir" -type l ! -exec test -e {} \; -print)
 done
 
-# --- .claude directory (-type l picks up dd-* symlinks at top of skills/) ---
+# --- .claude directory ---
+# -type l picks up symlinks: dd-* at top of skills/, and shared context symlinks
+# pointing to ../../.ai/ (rules/, skills/ source of truth for multi-agent sharing).
 claude_dirs=("agents" "assets" "commands" "rules" "scripts" "skills")
 for dir in "${claude_dirs[@]}"; do
   src_dir="$DOTFILES_DIR/.claude/$dir"
