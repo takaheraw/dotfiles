@@ -3,7 +3,7 @@
 ## コミットメッセージ形式
 
 ```
-<type>: <description>
+<type>(<scope>): <description>   # scope は任意
 ```
 
 タイプ: feat, fix, refactor, docs, test, chore, perf, ci, build, style
@@ -23,6 +23,8 @@
 - PR 作成時は全コミット履歴を分析し、包括的なサマリーを作成
 
 ## 機能実装ワークフロー
+
+複数ファイルにまたがる機能追加・挙動変更では以下の順に進める。設定値の変更や数行の修正では、TDD・検証・コミットだけでよい。
 
 1. **発想**: `superpowers:brainstorming` スキルで要件・意図・設計を探索
 2. **計画**: `superpowers:writing-plans` スキルで実装計画を作成（依存関係・リスク特定、フェーズ分割）
