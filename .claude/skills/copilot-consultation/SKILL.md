@@ -103,12 +103,10 @@ copilot -p "ここにプロンプトを入れる" --allow-all-tools --no-ask-use
 Copilot CLI は複数のモデルから選択できる。相談目的に応じて `--model` で指定する:
 
 ```
-copilot -p "..." --allow-all-tools --no-ask-user -s --model claude-opus-4.6
+copilot -p "..." --allow-all-tools --no-ask-user -s --model <model>
 ```
 
-セカンドオピニオンとして**呼び出し側とは異なるモデル**を選ぶと、多様性のある見解を得やすい:
-- 呼び出し側が Claude 系 → `gpt-5.4` や `gemini-3-pro-preview` を指定
-- 呼び出し側が GPT 系 → `claude-opus-4.6` を指定
+セカンドオピニオンとして呼び出し側とは別系統のモデル（Claude 系なら GPT / Gemini 系）を選ぶと、多様性のある見解を得やすい。モデル ID は Copilot CLI が現在提供しているものを確認して指定する。
 
 モデル指定がない場合は copilot のデフォルトが使われる。
 
