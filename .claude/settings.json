@@ -3,8 +3,7 @@
   "cleanupPeriodDays": 30,
   "env": {
     "BASH_DEFAULT_TIMEOUT_MS": "600000",
-    "CLAUDE_CODE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "true",
-    "ENABLE_LSP_TOOL": "1",
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
     "SHELL": "/opt/homebrew/bin/zsh"
   },
   "attribution": {
@@ -18,9 +17,6 @@
       "Write",
       "Glob",
       "Grep",
-      "LS",
-      "TodoRead",
-      "TodoWrite",
       "WebFetch(domain:*)",
       "WebSearch",
       "Bash(git status)",
@@ -42,7 +38,6 @@
       "Bash(mise:*)",
       "Bash(docker ps:*)",
       "Bash(docker logs:*)",
-      "Bash(docker exec:*)",
       "Bash(ls:*)",
       "Bash(cat:*)",
       "Bash(grep:*)",
@@ -50,15 +45,22 @@
       "Bash(echo:*)",
       "Bash(pwd)",
       "Bash(which:*)",
-      "Bash(env)",
-      "Bash(printenv:*)",
       "Bash(gh pr:*)",
       "Bash(gh issue:*)",
       "Bash(gh status)",
       "Bash(terraform plan:*)",
       "Bash(terraform validate)",
       "Bash(terraform fmt:*)",
-      "Bash(aws:*)"
+      "Bash(aws * describe-*)",
+      "Bash(aws * list-*)",
+      "Bash(aws * get-*)",
+      "Bash(aws s3 ls *)",
+      "Bash(aws logs tail *)",
+      "Bash(aws * logs tail *)",
+      "Bash(aws * filter-log-events *)",
+      "Bash(aws * start-query *)",
+      "Bash(aws * start-live-tail *)",
+      "Bash(aws sts get-caller-identity)"
     ],
     "deny": [
       "Bash(sudo:*)",
@@ -176,7 +178,14 @@
       "Edit(**/.env*)",
       "Edit(**/secrets/**)"
     ],
-    "ask": []
+    "ask": [
+      "Bash(npm publish *)",
+      "Bash(gh pr merge *)",
+      "Bash(aws secretsmanager get-secret-value *)",
+      "Bash(aws ssm get-parameter *)",
+      "Bash(aws ssm get-parameters *)",
+      "Bash(aws ssm get-parameters-by-path *)"
+    ]
   },
   "hooks": {
     "PreToolUse": [
@@ -223,7 +232,6 @@
     ],
     "Stop": [
       {
-        "matcher": "*",
         "hooks": [
           {
             "type": "command",
@@ -280,7 +288,6 @@
     }
   },
   "outputStyle": "Concise",
-  "alwaysThinkingEnabled": true,
   "tui": "fullscreen",
   "agentPushNotifEnabled": true
 }
