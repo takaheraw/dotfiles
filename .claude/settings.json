@@ -178,7 +178,6 @@
     ],
     "ask": []
   },
-  "model": "opus",
   "hooks": {
     "PreToolUse": [
       {
@@ -280,6 +279,8 @@
       }
     }
   },
+  "outputStyle": "Concise",
   "alwaysThinkingEnabled": true,
-  "tui": "fullscreen"
+  "tui": "fullscreen",
+  "agentPushNotifEnabled": true
 }
