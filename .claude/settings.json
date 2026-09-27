@@ -57,10 +57,9 @@
       "Bash(aws * get-*)",
       "Bash(aws s3 ls *)",
       "Bash(aws logs tail *)",
-      "Bash(aws * logs tail *)",
-      "Bash(aws * filter-log-events *)",
-      "Bash(aws * start-query *)",
-      "Bash(aws * start-live-tail *)",
+      "Bash(aws logs filter-log-events *)",
+      "Bash(aws logs start-query *)",
+      "Bash(aws logs start-live-tail *)",
       "Bash(aws sts get-caller-identity)"
     ],
     "deny": [
