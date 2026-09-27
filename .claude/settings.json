@@ -38,6 +38,7 @@
       "Bash(mise:*)",
       "Bash(docker ps:*)",
       "Bash(docker logs:*)",
+      "Bash(docker compose ps *)",
       "Bash(ls:*)",
       "Bash(cat:*)",
       "Bash(grep:*)",
